@@ -1,0 +1,2 @@
+SQLAlchemy=2.0.25
+pre-commit=4.5.0
