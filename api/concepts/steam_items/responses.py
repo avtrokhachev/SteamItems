@@ -1,10 +1,8 @@
+from pydantic import BaseModel
 from decimal import Decimal
 
-from pydantic import BaseModel
 
-
-class SteamItem(BaseModel):
-    id: str
+class SteamItemResponse(BaseModel):
     link: str
     name: str
     game_id: int

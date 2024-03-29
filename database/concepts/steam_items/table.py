@@ -6,6 +6,7 @@ from database.concepts import repository
 class SteamItems(repository.Base):
     __tablename__ = "steam_items"
 
+    id = Column(String, primary_key=True, nullable=False)
     link = Column(String, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
     game_id = Column(Integer, nullable=False)

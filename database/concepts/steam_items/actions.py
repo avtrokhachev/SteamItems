@@ -16,8 +16,8 @@ def get_all() -> list[SteamItem]:
     return result
 
 
-def get_by_link(link: str) -> tp.Optional[SteamItem]:
-    query = sqlalchemy.select(SteamItems).where(link=link)
+def get_by_id(id: str) -> tp.Optional[SteamItem]:
+    query = sqlalchemy.select(SteamItems).where(id=id)
     result = repository.Repository.run(query).fetchone()
 
     return result
@@ -28,14 +28,14 @@ def insert(steam_item: SteamItem) -> None:
     repository.Repository.run(query)
 
 
-def delete(link: str) -> None:
-    query = sqlalchemy.delete(SteamItems).where(link=link)
+def delete(id: str) -> None:
+    query = sqlalchemy.delete(SteamItems).where(id=id)
     repository.Repository.run(query)
 
 
 def upsert(steam_item: SteamItem):
-    existing_steam_item = get_by_link(link=steam_item.link)
-    if existing_steam_item:
-        delete(link=steam_item.link)
+    existing_steam_item = get_by_id(id=steam_item.id)
+    if existing_steam_item is None:
+        delete(id=steam_item.id)
 
     insert(steam_item=steam_item)

@@ -21,7 +21,8 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.create_table(
         'steam_items',
-        sa.Column('link', sa.Text, primary_key=True, nullable=False),
+        sa.Column('id', sa.Text, primary_key=True, nullable=False),
+        sa.Column('link', sa.Text, nullable=False),
         sa.Column('name', sa.Text, nullable=False),
         sa.Column('game_id', sa.Integer, nullable=False),
         sa.Column('buy_price', sa.DECIMAL, nullable=False),
