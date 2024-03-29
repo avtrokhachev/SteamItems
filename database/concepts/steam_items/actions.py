@@ -17,14 +17,14 @@ def get_all() -> list[SteamItem]:
 
 
 def get_by_id(id: str) -> tp.Optional[SteamItem]:
-    query = sqlalchemy.select(SteamItems).where(id=id)
+    query = sqlalchemy.select(SteamItems).filter_by(id=id)
     result = repository.Repository.run(query).fetchone()
 
     return result
 
 
 def insert(steam_item: SteamItem) -> None:
-    query = sqlalchemy.insert(SteamItem).values(steam_item.model_dump())
+    query = sqlalchemy.insert(SteamItems).values(steam_item.model_dump())
     repository.Repository.run(query)
 
 

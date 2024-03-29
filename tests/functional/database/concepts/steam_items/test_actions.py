@@ -8,4 +8,8 @@ class TestGetAll:
         assert result == []
 
     def test_correctly_returns_steam_items(self):
-        pass
+        items = [steam_items.factories.create() for _ in range(3)]
+
+        result = steam_items.get_all()
+
+        assert result == items

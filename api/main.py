@@ -1,5 +1,5 @@
-from fastapi import FastAPI
 from concepts.steam_items.handlers import router
+from fastapi import FastAPI
 
 app = FastAPI()
-app.include_router(router, prefix="/auth")
+app.include_router(router)

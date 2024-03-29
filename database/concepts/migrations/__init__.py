@@ -1,2 +1,1 @@
-from .alembic.env import run_migrations_online
-from .alembic.env import run_migrations_offline
+from .alembic.env import run_migrations_offline, run_migrations_online
