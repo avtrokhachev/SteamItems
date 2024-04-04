@@ -2,11 +2,12 @@ import random
 import string
 from secrets import choice
 from decimal import Decimal
+from common.constants import ID_LENGTH
 
 
 def generate_id() -> str:
     alphabet = string.ascii_lowercase + string.digits
-    return "".join(choice(alphabet) for _ in range(16))
+    return "".join(choice(alphabet) for _ in range(ID_LENGTH))
 
 
 def generate_string(length: int = 30) -> str:

@@ -1,6 +1,7 @@
 import typing as tp
 
 from sqlalchemy import CursorResult, Engine, create_engine
+from common.concepts import config
 
 
 class Repository:
@@ -9,9 +10,7 @@ class Repository:
     @classmethod
     def get_engine(cls) -> Engine:
         if cls._engine is None:
-            cls._engine = create_engine(
-                "postgresql://localhost:5432/avtrokhachev"
-            )
+            cls._engine = create_engine(config.get_value("database.connection_url"))
 
         return cls._engine
 
