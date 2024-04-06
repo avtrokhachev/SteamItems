@@ -51,6 +51,9 @@ def create(
         buy_orders=buy_orders,
         sell_orders=sell_orders,
     )
-    insert(steam_item=steam_item)
+    insert(
+        steam_item=steam_item,
+        tx=None,
+    )
 
     return steam_item

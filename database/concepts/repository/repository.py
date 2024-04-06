@@ -37,8 +37,8 @@ class Repository:
 
 def transactional(func):
     def wrapped(
-        tx: tp.Optional[sqlalchemy.Connection],
         *args,
+        tx: tp.Optional[sqlalchemy.Connection],
         **kwargs,
     ):
         if tx is not None:

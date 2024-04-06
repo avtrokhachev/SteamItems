@@ -4,6 +4,7 @@ from database.concepts.steam_items.actions import (
     get_all,
     get_by_id,
     insert,
+    update,
     upsert,
 )
 from database.concepts.steam_items.models import SteamItem

@@ -1,4 +1,5 @@
 import pytest
+import sqlalchemy
 from sqlalchemy import select, text
 
 from database.concepts import repository
@@ -65,7 +66,7 @@ class TestTransactional:
         prepare_database,
     ):
         try:
-            self.insert_with_exception()
+            self.insert_with_exception(tx=None)
         except Exception:
             pass
 
@@ -78,7 +79,7 @@ class TestTransactional:
         prepare_database,
     ):
         try:
-            self.insert_correct_and_with_exception()
+            self.insert_correct_and_with_exception(tx=None)
         except Exception:
             pass
 
@@ -93,7 +94,7 @@ class TestTransactional:
     @repository.transactional
     def correct_insert(
         self,
-        tx=None,
+        tx: sqlalchemy.Connection,
     ):
         repository.Repository.run(
             text(
@@ -108,7 +109,7 @@ class TestTransactional:
     @repository.transactional
     def insert_with_exception(
         self,
-        tx=None,
+        tx: sqlalchemy.Connection,
     ):
         repository.Repository.run(
             text(
@@ -124,7 +125,7 @@ class TestTransactional:
     @repository.transactional
     def insert_correct_and_with_exception(
         self,
-        tx=None,
+        tx: sqlalchemy.Connection,
     ):
         self.correct_insert(tx=tx)
         self.insert_with_exception(tx=tx)
