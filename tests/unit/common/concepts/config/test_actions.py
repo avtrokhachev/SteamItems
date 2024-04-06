@@ -4,7 +4,6 @@ from common.concepts import config
 
 
 class TestGetValue:
-
     ############
     # FIXTURES #
     ############
@@ -28,7 +27,6 @@ class TestGetValue:
 
 
 class TestSetValue:
-
     ############
     # FIXTURES #
     ############

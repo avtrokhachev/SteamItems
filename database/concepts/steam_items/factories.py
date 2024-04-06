@@ -1,8 +1,10 @@
-from typing import Optional
-from .models import SteamItem
-from .actions import insert
-from common.concepts import random
 from decimal import Decimal
+from typing import Optional
+
+from common.concepts import random
+
+from .actions import insert
+from .models import SteamItem
 
 
 def build(

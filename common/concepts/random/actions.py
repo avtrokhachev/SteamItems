@@ -1,7 +1,8 @@
 import random
 import string
-from secrets import choice
 from decimal import Decimal
+from secrets import choice
+
 from common.constants import ID_LENGTH
 
 

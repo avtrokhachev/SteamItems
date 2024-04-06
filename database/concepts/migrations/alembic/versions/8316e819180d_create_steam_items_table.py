@@ -1,7 +1,7 @@
 """create steam_items table
 
 Revision ID: 8316e819180d
-Revises: 
+Revises:
 Create Date: 2024-03-29 12:09:15.279485
 
 """

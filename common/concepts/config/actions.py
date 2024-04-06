@@ -1,9 +1,13 @@
 import os
-import yaml
-from .constants import DEFAULT_CONFIG_PATH
 from pathlib import Path
 
-CONFIG_DIR_PATH = str(Path(os.path.dirname((os.path.realpath(__file__)))).parents[2])
+import yaml
+
+from .constants import DEFAULT_CONFIG_PATH
+
+CONFIG_DIR_PATH = str(
+    Path(os.path.dirname((os.path.realpath(__file__)))).parents[2]
+)
 
 
 def get_config(
@@ -19,7 +23,7 @@ def set_config(
     path: str = DEFAULT_CONFIG_PATH,
 ) -> None:
     path = os.path.join(CONFIG_DIR_PATH, path)
-    with open(path, 'w') as cfg:
+    with open(path, "w") as cfg:
         yaml.safe_dump(config, cfg)
 
 

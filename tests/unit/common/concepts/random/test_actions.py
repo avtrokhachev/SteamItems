@@ -1,7 +1,9 @@
+from decimal import Decimal
+
 import pytest
+
 from common.concepts import random
 from common.constants import ID_LENGTH
-from decimal import Decimal
 
 
 class TestGenerateId:
@@ -14,7 +16,8 @@ class TestGenerateId:
 
 class TestGenerateString:
     @pytest.mark.parametrize(
-        "length", [
+        "length",
+        [
             3,
             5,
             15,
@@ -31,7 +34,8 @@ class TestGenerateString:
 
 class TestGenerateInt:
     @pytest.mark.parametrize(
-        "mi, ma", [
+        "mi, ma",
+        [
             (5, 5),
             (7, 10),
             (100, 150),
@@ -51,7 +55,8 @@ class TestGenerateInt:
 
 class TestGenerateDecimal:
     @pytest.mark.parametrize(
-        "mi, ma", [
+        "mi, ma",
+        [
             (Decimal("0"), Decimal("0.5")),
             (5, 5),
             (7, 10),

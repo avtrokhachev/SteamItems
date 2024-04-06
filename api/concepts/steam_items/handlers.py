@@ -1,9 +1,11 @@
 from typing import Optional
+
 from fastapi import APIRouter
-from .requests import SteamItemRequest
-from .responses import SteamItemResponse
+
 from controllers.concepts import steam_items
 
+from .requests import SteamItemRequest
+from .responses import SteamItemResponse
 
 router = APIRouter(
     prefix="/steamItems",
@@ -19,5 +21,5 @@ def get_all(steam_item_id: str) -> Optional[SteamItemResponse]:
 
     response = None
     if steam_item:
-        response = SteamItemResponse(steam_item.model_dump(mode='json'))
+        response = SteamItemResponse(steam_item.model_dump(mode="json"))
     return response

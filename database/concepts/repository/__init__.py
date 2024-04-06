@@ -1,2 +1,2 @@
 from .models import Base
-from .repository import Repository
+from .repository import Repository, transactional
