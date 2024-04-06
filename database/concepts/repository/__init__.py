@@ -1,2 +1,4 @@
-from .models import Base
-from .repository import Repository, transactional
+from sqlalchemy import Connection
+
+from database.concepts.repository.models import Base
+from database.concepts.repository.repository import Repository, transactional
