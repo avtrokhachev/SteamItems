@@ -4,7 +4,6 @@ from fastapi import APIRouter
 
 from controllers.concepts import steam_items
 
-from .requests import SteamItemRequest
 from .responses import SteamItemResponse
 
 router = APIRouter(
@@ -13,10 +12,10 @@ router = APIRouter(
 
 
 @router.get(
-    path="/get/{steam_item_id}",
+    path="{steam_item_id}/get",
     response_model=Optional[SteamItemResponse],
 )
-def get_all(steam_item_id: str) -> Optional[SteamItemResponse]:
+def get_steam_item(steam_item_id: str) -> Optional[SteamItemResponse]:
     steam_item = steam_items.get_steam_item(
         steam_item_id=steam_item_id,
         tx=None,

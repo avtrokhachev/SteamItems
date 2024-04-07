@@ -2,12 +2,34 @@ import os
 
 import yaml
 
-from .constants import DEFAULT_CONFIG_NAME, DEFAULT_CONFIGS_DIR
+from .constants import (
+    DEFAULT_CONFIG_NAME,
+    DEFAULT_CONFIGS_DIR,
+    DEFAULT_DEV_CONFIG_DIR,
+    DEFAULT_DEV_CONFIG_NAME,
+    State,
+)
+
+
+# TODO: check for testing env
+def get_configs_dir() -> str:
+    if os.getenv(State.IN_CONTAINER.value):
+        return DEFAULT_CONFIGS_DIR
+    else:
+        return DEFAULT_DEV_CONFIG_DIR
+
+
+# TODO: check for testing env
+def get_config_name() -> str:
+    if os.getenv(State.IN_CONTAINER.value):
+        return DEFAULT_CONFIG_NAME
+    else:
+        return DEFAULT_DEV_CONFIG_NAME
 
 
 def get_config(
-    name: str = DEFAULT_CONFIG_NAME,
-    dir: str = DEFAULT_CONFIGS_DIR,
+    name: str = get_config_name(),
+    dir: str = get_configs_dir(),
 ) -> dict:
     path = os.path.join(dir, name)
     with open(path, "r") as stream:
@@ -16,8 +38,8 @@ def get_config(
 
 def set_config(
     config: dict,
-    name: str = DEFAULT_CONFIG_NAME,
-    dir: str = DEFAULT_CONFIGS_DIR,
+    name: str = get_config_name(),
+    dir: str = get_configs_dir(),
 ) -> None:
     path = os.path.join(dir, name)
     with open(path, "w") as cfg:
@@ -26,8 +48,8 @@ def set_config(
 
 def get_value(
     key: str,
-    name: str = DEFAULT_CONFIG_NAME,
-    dir: str = DEFAULT_CONFIGS_DIR,
+    name: str = get_config_name(),
+    dir: str = get_configs_dir(),
 ):
     config = get_config(
         name=name,
@@ -46,8 +68,8 @@ def get_value(
 def set_value(
     key: str,
     value,
-    name: str = DEFAULT_CONFIG_NAME,
-    dir: str = DEFAULT_CONFIGS_DIR,
+    name: str = get_config_name(),
+    dir: str = get_configs_dir(),
 ) -> None:
     if value is None:
         return
