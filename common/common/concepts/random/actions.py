@@ -27,4 +27,6 @@ def generate_decimal(
     min: Decimal = Decimal("0"),
     max: Decimal = Decimal(10**3),
 ) -> Decimal:
-    return Decimal(random.uniform(float(min), float(max)))
+    return Decimal(random.uniform(float(min), float(max))).quantize(
+        Decimal("0.01")
+    )

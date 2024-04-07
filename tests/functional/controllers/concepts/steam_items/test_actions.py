@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from controllers.concepts import steam_items
 from database.concepts import steam_items as db_steam_items
 
@@ -34,19 +36,56 @@ class TestListSteamItems:
         assert result == list_of_steam_items
 
 
-class TestCreateSteamItem:
-    def test_ok(self):
+class TestUpdateSteamItem:
+    def test_creates_steam_item_when_does_not_exist(self):
         steam_item = db_steam_items.factories.build()
 
-        result = steam_items.create_steam_item(
-            steam_item=steam_item,
+        result = steam_items.update_steam_item(
+            link=steam_item.link,
+            name=steam_item.name,
+            game_id=steam_item.game_id,
+            buy_price=steam_item.buy_price,
+            sell_price=steam_item.sell_price,
+            buy_orders=steam_item.buy_orders,
+            sell_orders=steam_item.sell_orders,
             tx=None,
         )
 
+        steam_item.id = result.id
         assert result == steam_item
 
-        result = db_steam_items.get_by_id(
-            id=steam_item.id,
+        db_steam_item = db_steam_items.get_by_link(
+            link=steam_item.link,
             tx=None,
         )
-        assert result == steam_item
+        assert db_steam_item == result
+
+    def test_updates_steam_item_when_exists(self):
+        steam_item = db_steam_items.factories.create()
+
+        result = steam_items.update_steam_item(
+            link=steam_item.link,
+            name=steam_item.name,
+            game_id=steam_item.game_id,
+            buy_price=Decimal("12.34"),
+            sell_price=Decimal("23.45"),
+            buy_orders=13,
+            sell_orders=37,
+            tx=None,
+        )
+
+        assert result.buy_price == Decimal("12.34")
+        assert result.sell_price == Decimal("23.45")
+        assert result.buy_orders == 13
+        assert result.sell_orders == 37
+
+        result = db_steam_items.get_all(
+            tx=None,
+        )
+        assert len(result) == 1
+
+        result = result[0]
+        assert result.buy_price == Decimal("12.34")
+        assert result.sell_price == Decimal("23.45")
+        assert result.buy_orders == 13
+        assert result.sell_orders == 37

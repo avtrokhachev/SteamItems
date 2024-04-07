@@ -117,3 +117,23 @@ class TestUpsert:
 
         result.sell_orders = steam_item.sell_orders
         assert result == steam_item
+
+
+class TestGetByLink:
+    def test_returns_none_when_no_steam_item(self):
+        result = steam_items.get_by_link(
+            link=random.generate_string(),
+            tx=None,
+        )
+
+        assert result is None
+
+    def test_ok(self):
+        steam_item = steam_items.factories.create()
+
+        result = steam_items.get_by_link(
+            link=steam_item.link,
+            tx=None,
+        )
+
+        assert result == steam_item
