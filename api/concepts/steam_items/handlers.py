@@ -17,7 +17,10 @@ router = APIRouter(
     response_model=Optional[SteamItemResponse],
 )
 def get_all(steam_item_id: str) -> Optional[SteamItemResponse]:
-    steam_item = steam_items.get_steam_item(steam_item_id=steam_item_id)
+    steam_item = steam_items.get_steam_item(
+        steam_item_id=steam_item_id,
+        tx=None,
+    )
 
     response = None
     if steam_item:

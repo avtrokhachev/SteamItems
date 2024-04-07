@@ -1,3 +1,0 @@
-database:
-  connection_url: postgresql://localhost:5432/avtrokhachev
-test_config: test_value
