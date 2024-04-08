@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import yaml
 
@@ -11,7 +12,6 @@ from .constants import (
 )
 
 
-# TODO: check for testing env
 def get_configs_dir() -> str:
     if os.getenv(State.IN_CONTAINER.value):
         return DEFAULT_CONFIGS_DIR
@@ -19,7 +19,6 @@ def get_configs_dir() -> str:
         return DEFAULT_DEV_CONFIG_DIR
 
 
-# TODO: check for testing env
 def get_config_name() -> str:
     if os.getenv(State.IN_CONTAINER.value):
         return DEFAULT_CONFIG_NAME
@@ -28,9 +27,14 @@ def get_config_name() -> str:
 
 
 def get_config(
-    name: str = get_config_name(),
-    dir: str = get_configs_dir(),
+    name: Optional[str] = None,
+    dir: Optional[str] = None,
 ) -> dict:
+    if name is None:
+        name = get_config_name()
+    if dir is None:
+        dir = get_configs_dir()
+
     path = os.path.join(dir, name)
     with open(path, "r") as stream:
         return yaml.safe_load(stream=stream)
@@ -38,9 +42,14 @@ def get_config(
 
 def set_config(
     config: dict,
-    name: str = get_config_name(),
-    dir: str = get_configs_dir(),
+    name: Optional[str] = None,
+    dir: Optional[str] = None,
 ) -> None:
+    if name is None:
+        name = get_config_name()
+    if dir is None:
+        dir = get_configs_dir()
+
     path = os.path.join(dir, name)
     with open(path, "w") as cfg:
         yaml.safe_dump(config, cfg)
@@ -48,9 +57,14 @@ def set_config(
 
 def get_value(
     key: str,
-    name: str = get_config_name(),
-    dir: str = get_configs_dir(),
+    name: Optional[str] = None,
+    dir: Optional[str] = None,
 ):
+    if name is None:
+        name = get_config_name()
+    if dir is None:
+        dir = get_configs_dir()
+
     config = get_config(
         name=name,
         dir=dir,
@@ -68,9 +82,14 @@ def get_value(
 def set_value(
     key: str,
     value,
-    name: str = get_config_name(),
-    dir: str = get_configs_dir(),
+    name: Optional[str] = None,
+    dir: Optional[str] = None,
 ) -> None:
+    if name is None:
+        name = get_config_name()
+    if dir is None:
+        dir = get_configs_dir()
+
     if value is None:
         return
 
