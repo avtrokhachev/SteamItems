@@ -7,3 +7,4 @@ alembic
 fastapi
 httpx
 uvicorn
+python-dotenv
