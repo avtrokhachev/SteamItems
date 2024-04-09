@@ -46,6 +46,24 @@ def get_by_id(
 
 
 @repository.transactional
+def get_by_link(
+    link: str,
+    tx: sqlalchemy.Connection,
+) -> tp.Optional[SteamItem]:
+    query = sqlalchemy.select(SteamItems).filter_by(link=link)
+    result = repository.Repository.run(
+        query,
+        tx=tx,
+    ).fetchone()
+
+    if result is not None:
+        result = SteamItem.model_validate(
+            {k: v for k, v in zip(SteamItem.__fields__, result)}
+        )
+    return result
+
+
+@repository.transactional
 def insert(
     steam_item: SteamItem,
     tx: sqlalchemy.Connection,

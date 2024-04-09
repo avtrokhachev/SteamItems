@@ -1,9 +1,9 @@
 .idea/
 .pytest_cache/
 .venv/
-venv/
 *.egg-info
 api/build/
 controllers/build/
 database/build/
 common/build/
+/venv/
