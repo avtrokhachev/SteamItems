@@ -10,10 +10,7 @@ COPY . .
 RUN sudo mkdir /etc/configs
 RUN sudo mv configs/prod_config.yaml /etc/configs/config.yaml
 
-RUN python3 -m pip install common/
-RUN python3 -m pip install database/
-RUN python3 -m pip install controllers/
-RUN python3 -m pip install api/
+RUN make install
 RUN pip install -r requirements.txt
 
 ENTRYPOINT ["sudo", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port",  "80", "--env-file", "configs/prod_config.env"]
