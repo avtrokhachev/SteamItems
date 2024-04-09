@@ -2,6 +2,7 @@
 .pytest_cache/
 .venv/
 *.egg-info
+/venv/
 api/build/
 controllers/build/
 database/build/
