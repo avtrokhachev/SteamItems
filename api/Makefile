@@ -37,5 +37,6 @@ activate_linters:
 	pre-commit install
 	pre-commit install-hooks
 
+
 run_tests:
 	pytest $(TESTS_DIR)

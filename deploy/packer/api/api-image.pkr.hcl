@@ -32,8 +32,7 @@ source "yandex" "steam-items-api" {
            "sudo apt-get update -y",
            "sudo apt-get install -y docker.io",
            "sudo systemctl start docker",
-           "sudo docker pull cr.yandex/crpoqe2ki2gq5j0p88mp/steam_items_api:latest",
-           "sudo docker run --detach --publish 80:80 cr.yandex/crpoqe2ki2gq5j0p88mp/steam_items_api:latest"]
+           "sudo docker pull cr.yandex/crpoqe2ki2gq5j0p88mp/steam_items_api:latest"]
    }
 
  }

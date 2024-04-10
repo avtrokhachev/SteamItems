@@ -1,0 +1,11 @@
+#cloud-config
+ssh_pwauth: no
+users:
+  - name: avtrokhachev
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh-authorized-keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5Go2XuzVPCeNdDBL7fK+pjmW8lbCMhdhmHHzDGcLARPJq/bRi8TIyE+s4abcMRU9TAnu92Yb0B+VnAqvHihSmz1Md25EYN08zRhHp74157PvqrOK4j6T/vBR8s0u6MD500fNx0ZAElrwPP7dfQP+63VJpsjLdnBL2oM6FwJJBZ0p5qECl1+/GtV6lt9mOMsewKySrc5eOEcRZTk5y11YbtImhxyEBNmB+mGaK8kUpZeVEFDMGk3EvzCzVm+6JGDsIXkQ3KT966tcBrKLGngGjJNDTvmNQIc3Zd+i5gU23+rgwD50d86r+WBbT0zURmfG7rQAC1RdPW7W/89s723M89K5AoZLV/i6/XQ/y2ekC9v3uPVS9BPiNwQjg+uLUkurXkGTFUPj6Uv3GurqSdm0sdl8ueYBh0tywRzbqrIZVttLFxVXKV2TBC/lZ096B31KbUz+LwU74ViMYCybU8u3ty6VskD0I3sn/avlyUqqEZPBOLRVOYt2zLvxp4p+svrE= avtrokhachev@i106040781"
+
+runcmd:
+  - [docker, run, --detach, --publish, 80:80, cr.yandex/crpoqe2ki2gq5j0p88mp/steam_items_api:latest]
