@@ -19,12 +19,11 @@ install:
 	python3 -m pip install $(API_DIR)
 
 
-# TODO: figure out why this does not work :/
 install_dev:
-	python3 -m pip install -e $(COMMON_DIR)
-	python3 -m pip install -e $(DATABASE_DIR)
-	python3 -m pip install -e $(CONTROLLERS_DIR)
-	python3 -m pip install -e $(API_DIR)
+	python3 -m pip install -e $(COMMON_DIR) --config-settings editable_mode=strict
+	python3 -m pip install -e $(DATABASE_DIR) --config-settings editable_mode=strict
+	python3 -m pip install -e $(CONTROLLERS_DIR) --config-settings editable_mode=strict
+	python3 -m pip install -e $(API_DIR) --config-settings editable_mode=strict
 
 
 uninstall:
