@@ -13,4 +13,4 @@ RUN sudo mv configs/prod_config.yaml /etc/configs/config.yaml
 RUN make install
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["sudo", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port",  "80", "--env-file", "configs/prod_config.env"]
+ENTRYPOINT ["sudo", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port",  "80", "--env-file", "configs/prod_envs.env"]

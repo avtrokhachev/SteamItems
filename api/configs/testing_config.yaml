@@ -1,0 +1,2 @@
+database:
+  connection_url: postgresql://localhost:5432/testing

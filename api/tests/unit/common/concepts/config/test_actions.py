@@ -1,7 +1,6 @@
 import os
 
 import pytest
-
 from common.concepts import config
 
 
@@ -58,8 +57,16 @@ class TestGetConfigsDir:
     ############
 
     @pytest.fixture(scope="function")
-    def set_container_env(self):
-        os.environ[config.constants.State.IN_CONTAINER.value] = "true"
+    def set_production_env(self):
+        os.environ[config.constants.State.PRODUCTION.value] = "true"
+        yield
+        os.environ.pop(config.constants.State.PRODUCTION.value)
+
+    @pytest.fixture(scope="function")
+    def set_testing_env(self):
+        os.environ[config.constants.State.TESTING.value] = "true"
+        yield
+        os.environ.pop(config.constants.State.TESTING.value)
 
     #########
     # TESTS #
@@ -70,9 +77,17 @@ class TestGetConfigsDir:
 
         assert result == config.constants.DEFAULT_DEV_CONFIG_DIR
 
-    def test_correctly_gets_dir_for_container(
+    def test_correctly_gets_dir_for_production(
         self,
-        set_container_env,
+        set_production_env,
+    ):
+        result = config.get_configs_dir()
+
+        assert result == config.constants.DEFAULT_CONFIGS_DIR
+
+    def test_correctly_gets_dir_for_testing(
+        self,
+        set_testing_env,
     ):
         result = config.get_configs_dir()
 
@@ -85,8 +100,16 @@ class TestGetConfigsName:
     ############
 
     @pytest.fixture(scope="function")
-    def set_container_env(self):
-        os.environ[config.constants.State.IN_CONTAINER.value] = "true"
+    def set_production_env(self):
+        os.environ[config.constants.State.PRODUCTION.value] = "true"
+        yield
+        os.environ.pop(config.constants.State.PRODUCTION.value)
+
+    @pytest.fixture(scope="function")
+    def set_testing_env(self):
+        os.environ[config.constants.State.TESTING.value] = "true"
+        yield
+        os.environ.pop(config.constants.State.TESTING.value)
 
     #########
     # TESTS #
@@ -97,9 +120,17 @@ class TestGetConfigsName:
 
         assert result == config.constants.DEFAULT_DEV_CONFIG_NAME
 
-    def test_correctly_gets_dir_for_container(
+    def test_correctly_gets_dir_for_production(
         self,
-        set_container_env,
+        set_production_env,
+    ):
+        result = config.get_config_name()
+
+        assert result == config.constants.DEFAULT_CONFIG_NAME
+
+    def test_correctly_gets_dir_for_testing(
+        self,
+        set_testing_env,
     ):
         result = config.get_config_name()
 

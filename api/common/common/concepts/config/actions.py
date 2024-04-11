@@ -13,14 +13,14 @@ from .constants import (
 
 
 def get_configs_dir() -> str:
-    if os.getenv(State.IN_CONTAINER.value):
+    if os.getenv(State.TESTING.value) or os.getenv(State.PRODUCTION.value):
         return DEFAULT_CONFIGS_DIR
     else:
         return DEFAULT_DEV_CONFIG_DIR
 
 
 def get_config_name() -> str:
-    if os.getenv(State.IN_CONTAINER.value):
+    if os.getenv(State.TESTING.value) or os.getenv(State.PRODUCTION.value):
         return DEFAULT_CONFIG_NAME
     else:
         return DEFAULT_DEV_CONFIG_NAME
