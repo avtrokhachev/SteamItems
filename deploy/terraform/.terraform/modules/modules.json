@@ -1,1 +1,1 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"api-network","Source":"./infrastructure/modules/api-network","Dir":"infrastructure/modules/api-network"},{"Key":"database","Source":"./infrastructure/modules/database","Dir":"infrastructure/modules/database"}]}
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"api","Source":"./modules/api","Dir":"modules/api"},{"Key":"api-network","Source":"./modules/api-network","Dir":"modules/api-network"},{"Key":"api-static-addr","Source":"./modules/api-static-addr","Dir":"modules/api-static-addr"}]}
