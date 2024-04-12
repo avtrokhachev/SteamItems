@@ -15,7 +15,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   network_interface {
-    subnet_id      = yandex_vpc_subnet.subnet-1.id
+    subnet_id      = yandex_vpc_subnet.subnet-api.id
     nat            = true
     nat_ip_address = yandex_vpc_address.addr.external_ipv4_address[0].address
   }

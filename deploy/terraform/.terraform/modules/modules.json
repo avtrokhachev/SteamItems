@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"api-network","Source":"./infrastructure/modules/api-network","Dir":"infrastructure/modules/api-network"},{"Key":"database","Source":"./infrastructure/modules/database","Dir":"infrastructure/modules/database"}]}
