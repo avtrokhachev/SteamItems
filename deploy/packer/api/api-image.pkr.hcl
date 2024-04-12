@@ -19,7 +19,7 @@ source "yandex" "steam-items-api" {
    image_description   = "api for steam_items project"
    image_family        = "ubuntu-2004-lts"
    image_name          = "steam-items-api"
-   subnet_id           = "e9bnftur59a85c304t34"
+   subnet_id           = "e9bmm3ej8nio0sha1nbd"
    disk_type           = "network-ssd"
    zone                = "ru-central1-a"
  }
