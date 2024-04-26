@@ -10,8 +10,7 @@ api/api/build/
 api/controllers/build/
 api/database/build/
 api/common/build/
-*/.terraform/
-*/.terraform
-*.lock.hcl
-*.ftstate
-*.ftstate.backup
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/.terraform.lock.hcl
