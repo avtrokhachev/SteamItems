@@ -1,0 +1,7 @@
+**/__pycache__/
+*.egg-info
+venv/
+api/api/build/
+api/controllers/build/
+api/database/build/
+api/common/build/
