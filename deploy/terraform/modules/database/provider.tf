@@ -4,10 +4,5 @@
        source = "yandex-cloud/yandex"
      }
    }
- }
-
- provider "yandex" {
-   cloud_id  = var.cloud_id
-   folder_id = var.folder_id
-   zone      = "ru-central1-a"
+   required_version = ">= 0.13"
  }

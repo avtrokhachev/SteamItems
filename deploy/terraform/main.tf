@@ -26,10 +26,11 @@ module "api" {
   api_nat_ip_address = module.api-static-addr.external_ipv4_address
 }
 
-module "database" {
-  source = "./modules/database"
-  folder_id = var.folder_id
-  cloud_id = var.cloud_id
-  network_id = module.database-network.vpc_network
-  subnet_id = module.database-network.vpc_subnet
-}
+#module "database" {
+#  source = "./modules/database"
+#  folder_id = var.folder_id
+#  cloud_id = var.cloud_id
+#  network_id = module.database-network.vpc_network
+#  subnet_id = module.database-network.vpc_subnet
+#  depends_on = [module.database-network]
+#}
