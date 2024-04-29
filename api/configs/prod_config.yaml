@@ -1,2 +1,2 @@
 database:
-  connection_url: postgresql://api-postgres:api-postgres-password@rc1a-rdcngsy6duv7jpq3.mdb.yandexcloud.net:6432/postgres-api
+  connection_url: postgresql://api-postgres:api-postgres-password@rc1a-jnux2woeckl0dttk.mdb.yandexcloud.net:6432/postgres-api

@@ -13,10 +13,14 @@ COMMON_DIR = "$(COMMON_PACKAGE_NAME)/"
 
 
 install:
-	python3 -m pip install $(COMMON_DIR)
-	python3 -m pip install $(DATABASE_DIR)
-	python3 -m pip install $(CONTROLLERS_DIR)
-	python3 -m pip install $(API_DIR)
+	python3 -m pip install $(COMMON_DIR) --break-system-packages
+	python3 -m pip install $(DATABASE_DIR) --break-system-packages
+	python3 -m pip install $(CONTROLLERS_DIR) --break-system-packages
+	python3 -m pip install $(API_DIR) --break-system-packages
+
+	mkdir -p ~/.postgresql
+	wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document ~/.postgresql/root.crt
+	chmod 0600 ~/.postgresql/root.crt
 
 
 install_dev:

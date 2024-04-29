@@ -11,7 +11,7 @@ resource "yandex_mdb_postgresql_cluster" "postgres" {
       disk_size          = 100
     }
     postgresql_config = {
-      max_connections                   = 500
+      max_connections                   = 400
       enable_parallel_hash              = true
       autovacuum_vacuum_scale_factor    = 0.34
       default_transaction_isolation     = "TRANSACTION_ISOLATION_READ_COMMITTED"
@@ -27,7 +27,7 @@ resource "yandex_mdb_postgresql_cluster" "postgres" {
   user {
     name       = "api-postgres"
     password   = "api-postgres-password"
-    conn_limit = 480
+    conn_limit = 380
     permission {
       database_name = "postgres-api"
     }
