@@ -1,32 +1,23 @@
 import typing as tp
 from configparser import SectionProxy
 
-from src.Database import Database
-from src.MarketItem import MarketItem
-from src.Parser import Parser
+import requests
+from MarketItem import MarketItem
+from Parser import Parser
 
 
 class MarketBot:
     def __init__(self, game_id: int, cfg: SectionProxy):
         self.game_id: int = game_id
         self.parser = Parser(game_id)
-        self.balance: float = self.parser.get_balance()
-        self.database = Database(cfg["PostgresOptions"])
+        self.api_url = cfg["api_url"]
 
-    async def start(self):
-        await self.database.on_start()
+    def update_items(self):
+        while True:
+            for i in self.parser.get_all_items():
+                i = self.parser.get_cost_and_orders(i)
+                self.upsert_item(i)
 
-    async def update_items(self):
-        for i in self.parser.get_all_items():
-            i = self.parser.get_cost_and_orders(i)
-            await self.database.insert_item(i)
-
-    async def get_the_worthest_item(self) -> tp.Optional[MarketItem]:
-        items = await self.database.get_items()
-        items = list(items)
-        items = [(MarketItem.get_worth(i), i) for i in items]
-        items.sort(key=lambda x: x[0])
-        items.reverse()
-        if items[0][0] > 0:
-            return items[0][1]
-        return None
+    def upsert_item(self, market_item: MarketItem):
+        response = requests.post(self.api_url, json=market_item.get_dict())
+        print(response.status_code)

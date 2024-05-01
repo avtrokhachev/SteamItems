@@ -3,17 +3,20 @@ import time
 from copy import copy
 
 import bs4
+from functions import convert_to_dollars
+from MarketItem import MarketItem
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from src.functions import convert_to_dollars
-from src.MarketItem import MarketItem
 
 
 class Parser:
-    market_link = "https://steamcommunity.com/market/search?appid=%s#p%s_price_asc"
+    market_link = (
+        "https://steamcommunity.com/market/search?appid=%s#p%s_price_asc"
+    )
     time_to_wait = 5
     time_timeout = 120
     time_to_load = 1
@@ -22,10 +25,20 @@ class Parser:
         self.game_id: int = game_id
 
         options = webdriver.ChromeOptions()
-        options.add_argument("headless")
-        options.add_argument("window-size=1920x1080")
-        options.add_argument("disable-gpu")
-        self.driver = webdriver.Chrome("chromedriver", options=options)
+        options.add_argument("--disable-gpu")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-setuid-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--start-maximized")
+        options.add_argument("--window-size=1920,1080")
+        # options.binary_location = "/opt/chrome/chrome-linux64/chrome"
+
+        chrome_service = ChromeService(
+            executable_path="/opt/chromedriver/chromedriver-linux64/chromedriver"
+        )
+
+        # self.driver = webdriver.Chrome(service=chrome_service, options=options)
+        self.driver = webdriver.Chrome(options=options)
 
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
@@ -36,7 +49,9 @@ class Parser:
         py_handler.setFormatter(py_formatter)
         self.logger.addHandler(py_handler)
 
-        self.logger.info(f"Parser for game with game_id = {self.game_id} created")
+        self.logger.info(
+            f"Parser for game with game_id = {self.game_id} created"
+        )
 
     def get_total_pages(self) -> int:
         link = Parser.market_link % (self.game_id, 1)
@@ -54,10 +69,16 @@ class Parser:
                 )
 
                 self.logger.info(f"Page {link} successfully loaded")
-                soup = bs4.BeautifulSoup(self.driver.page_source, "html.parser")
-                all_pages = soup.find_all("span", {"class": "market_paging_pagelink"})
+                soup = bs4.BeautifulSoup(
+                    self.driver.page_source, "html.parser"
+                )
+                all_pages = soup.find_all(
+                    "span", {"class": "market_paging_pagelink"}
+                )
                 all_pages.extend(
-                    soup.find_all("span", {"class": "market_paging_pagelink.active"})
+                    soup.find_all(
+                        "span", {"class": "market_paging_pagelink.active"}
+                    )
                 )
                 all_pages = [int(i.text) for i in all_pages]
                 all_pages.sort()
@@ -94,9 +115,16 @@ class Parser:
 
                 self.logger.info(f"Page {link} successfully loaded")
                 time.sleep(Parser.time_to_load)
-                soup = bs4.BeautifulSoup(self.driver.page_source, "html.parser")
-                raw_items = soup.find_all("a", {"class": "market_listing_row_link"})
-                items = [MarketItem.from_raw_html(i, self.game_id) for i in raw_items]
+                soup = bs4.BeautifulSoup(
+                    self.driver.page_source, "html.parser"
+                )
+                raw_items = soup.find_all(
+                    "a", {"class": "market_listing_row_link"}
+                )
+                items = [
+                    MarketItem.from_raw_html(i, self.game_id)
+                    for i in raw_items
+                ]
                 self.logger.info(
                     f"Got {len(items)} items from page = {page_number}, link = {link}"
                 )
@@ -108,7 +136,9 @@ class Parser:
                 time.sleep(Parser.time_timeout)
 
     def get_all_items(self) -> list[MarketItem]:
-        self.logger.info(f"Start getting all items for game_id = {self.game_id}")
+        self.logger.info(
+            f"Start getting all items for game_id = {self.game_id}"
+        )
         max_pages = self.get_total_pages()
         current_page = 1
 
@@ -121,7 +151,9 @@ class Parser:
             time.sleep(Parser.time_to_wait)
 
     def get_cost_and_orders(self, item: MarketItem) -> MarketItem:
-        self.logger.info(f"Getting info for item {item.name}, link {item.link}")
+        self.logger.info(
+            f"Getting info for item {item.name}, link {item.link}"
+        )
         new_item = copy(item)
         self.driver.delete_all_cookies()
 
@@ -129,7 +161,9 @@ class Parser:
             try:
                 self.driver.get(new_item.link)
                 WebDriverWait(self.driver, Parser.time_to_wait).until(
-                    EC.presence_of_element_located((By.ID, "market_commodity_forsale"))
+                    EC.presence_of_element_located(
+                        (By.ID, "market_commodity_forsale")
+                    )
                 )
                 WebDriverWait(self.driver, Parser.time_to_wait).until(
                     EC.presence_of_element_located(
@@ -139,7 +173,9 @@ class Parser:
 
                 self.logger.info(f"Page {new_item.link} successfully loaded")
                 time.sleep(Parser.time_to_load)
-                soup = bs4.BeautifulSoup(self.driver.page_source, "html.parser")
+                soup = bs4.BeautifulSoup(
+                    self.driver.page_source, "html.parser"
+                )
                 sales = soup.find("div", {"id": "market_commodity_forsale"})
                 raw_text = sales.find_all(
                     "span", {"class": "market_commodity_orders_header_promote"}
@@ -147,7 +183,9 @@ class Parser:
                 new_item.sell_orders = int(raw_text[0].text)
                 new_item.sell_price = convert_to_dollars(raw_text[1].text)
 
-                sales = soup.find("div", {"id": "market_commodity_buyrequests"})
+                sales = soup.find(
+                    "div", {"id": "market_commodity_buyrequests"}
+                )
                 raw_text = sales.find_all(
                     "span", {"class": "market_commodity_orders_header_promote"}
                 )
@@ -166,7 +204,3 @@ class Parser:
         self.logger.info(f"Successfully got info for {new_item.name}")
         time.sleep(Parser.time_to_wait)
         return new_item
-
-    def get_balance(self) -> float:
-        # TODO
-        return 100.0

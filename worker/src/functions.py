@@ -1,8 +1,14 @@
 import configparser
 import os
+from decimal import Decimal
 
 
-def convert_to_dollars(raw_value: str) -> float:
+def convert_to_dollars(raw_value: str) -> Decimal:
+    if "$" not in raw_value:
+        raise Exception(
+            f"Price {raw_value} not in dollars. Contract violation."
+        )
+
     cur_val = [i for i in raw_value]
     ans = []
     for i in cur_val:
@@ -12,7 +18,8 @@ def convert_to_dollars(raw_value: str) -> float:
     ans = ans.replace(",", ".")
     if len(ans) == 0:
         ans = "0"
-    return float(ans)
+
+    return Decimal(ans)
 
 
 def get_settings() -> configparser.SectionProxy:

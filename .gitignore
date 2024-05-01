@@ -6,6 +6,7 @@
 *.egg-info
 /venv/
 api/venv/
+worker/venv/
 api/api/build/
 api/controllers/build/
 api/database/build/

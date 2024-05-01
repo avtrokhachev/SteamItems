@@ -1,21 +1,21 @@
 from __future__ import annotations
 
+import dataclasses
+import json
 import typing as tp
 from dataclasses import dataclass
+from decimal import Decimal
 
 import bs4
-
-COMMISION = 0.13
 
 
 @dataclass
 class MarketItem:
     link: str
     name: str
-    game_name: str
     game_id: int
-    buy_price: tp.Optional[float] = None
-    sell_price: tp.Optional[float] = None
+    buy_price: tp.Optional[Decimal] = None
+    sell_price: tp.Optional[Decimal] = None
     buy_orders: tp.Optional[int] = None
     sell_orders: tp.Optional[int] = None
 
@@ -24,14 +24,13 @@ class MarketItem:
         cls, raw_html: bs4.element.PageElement, game_id: int
     ) -> MarketItem:
         item_link = raw_html["href"]
-        context = raw_html.find_next("div", {"class": "market_listing_item_name_block"})
+        context = raw_html.find_next(
+            "div", {"class": "market_listing_item_name_block"}
+        )
         item_name = context.find_next(
             "span", {"class": "market_listing_item_name"}
         ).text
-        item_game = context.find_next(
-            "span", {"class": "market_listing_game_name"}
-        ).text
-        return cls(item_link, item_name, item_game, game_id)
+        return cls(item_link, item_name, game_id)
 
     @classmethod
     def from_tuple(cls, data: tuple) -> MarketItem:
@@ -39,42 +38,17 @@ class MarketItem:
             data[0],
             data[1],
             data[2],
-            data[3],
-            float(data[4]),
-            float(data[5]),
+            Decimal(data[3]),
+            Decimal(data[4]),
+            data[5],
             data[6],
-            data[7],
         )
 
-    def get_database_row(self) -> tuple:
-        return (
-            self.link,
-            self.name,
-            self.game_name,
-            self.game_id,
-            self.buy_price,
-            self.sell_price,
-            self.buy_orders,
-            self.sell_orders,
-        )
-
-    def get_worth(self) -> tp.Optional[float]:
-        if (
-            not self.buy_orders
-            or not self.sell_orders
-            or not self.buy_price
-            or not self.sell_price
-        ):
-            raise Exception(
-                f"Order {self.link} wasn't filled with info before get_worth action"
-            )
-
-        total_earn = self.sell_price * (1 - COMMISION) - self.buy_price
-        if total_earn <= 0.5 or total_earn / self.buy_price < 0.1:
-            return None
-        if self.buy_orders < self.sell_orders * 8:
-            return None
-        return total_earn / self.buy_price
+    def get_dict(self) -> dict:
+        ans = dataclasses.asdict(self)
+        ans["buy_price"] = str(ans["buy_price"])
+        ans["sell_price"] = str(ans["sell_price"])
+        return ans
 
     def __copy__(self):
         cls = self.__class__
