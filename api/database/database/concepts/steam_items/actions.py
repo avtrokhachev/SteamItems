@@ -89,7 +89,7 @@ def delete(
 
 @repository.transactional
 def update(steam_item: SteamItem, tx: sqlalchemy.Connection) -> None:
-    query = sqlalchemy.update(SteamItems).values(steam_item.model_dump())
+    query = sqlalchemy.update(SteamItems).where(SteamItems.id == steam_item.id).values(steam_item.model_dump())
     repository.Repository.run(
         query,
         tx=tx,

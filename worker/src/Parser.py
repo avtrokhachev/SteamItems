@@ -1,3 +1,5 @@
+import random
+from datetime import datetime
 import logging
 import time
 from copy import copy
@@ -25,7 +27,7 @@ class Parser:
 
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-gpu")
-        options.add_argument('--headless')
+        options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
@@ -127,13 +129,14 @@ class Parser:
                 time.sleep(Parser.time_timeout)
 
     def get_all_items(self) -> list:
+        random.seed(datetime.now().timestamp())
         self.logger.info(
             f"Start getting all items for game_id = {self.game_id}"
         )
         max_pages = self.get_total_pages()
-        current_page = 1
 
-        while current_page <= max_pages:
+        while True:
+            current_page = random.randint(1, max_pages)
             items_on_page = self.get_items_from_page(current_page)
             if len(items_on_page) != 0:
                 for i in items_on_page:
