@@ -7,7 +7,6 @@ from functions import convert_to_dollars
 from MarketItem import MarketItem
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -26,18 +25,10 @@ class Parser:
 
         options = webdriver.ChromeOptions()
         options.add_argument("--disable-gpu")
+        options.add_argument('--headless')
         options.add_argument("--no-sandbox")
-        options.add_argument("--disable-setuid-sandbox")
         options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--start-maximized")
         options.add_argument("--window-size=1920,1080")
-        # options.binary_location = "/opt/chrome/chrome-linux64/chrome"
-
-        chrome_service = ChromeService(
-            executable_path="/opt/chromedriver/chromedriver-linux64/chromedriver"
-        )
-
-        # self.driver = webdriver.Chrome(service=chrome_service, options=options)
         self.driver = webdriver.Chrome(options=options)
 
         self.logger = logging.getLogger(__name__)
@@ -97,7 +88,7 @@ class Parser:
                 self.logger.exception(e)
                 time.sleep(Parser.time_timeout)
 
-    def get_items_from_page(self, page_number: int) -> list[MarketItem]:
+    def get_items_from_page(self, page_number: int) -> list:
         link = Parser.market_link % (self.game_id, page_number)
         self.driver.delete_all_cookies()
         self.logger.info(
@@ -135,7 +126,7 @@ class Parser:
                 )
                 time.sleep(Parser.time_timeout)
 
-    def get_all_items(self) -> list[MarketItem]:
+    def get_all_items(self) -> list:
         self.logger.info(
             f"Start getting all items for game_id = {self.game_id}"
         )

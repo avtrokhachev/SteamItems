@@ -20,4 +20,3 @@ class MarketBot:
 
     def upsert_item(self, market_item: MarketItem):
         response = requests.post(self.api_url, json=market_item.get_dict())
-        print(response.status_code)
