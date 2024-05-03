@@ -5,7 +5,7 @@ from MarketBot import MarketBot
 def main():
     config = get_settings()
     bot = MarketBot(252490, config)
-    bot.update_items()
+    bot.start()
 
 
 if __name__ == "__main__":

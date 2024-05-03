@@ -31,6 +31,7 @@ class Parser:
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920,1080")
+        # "chromedriver"
         self.driver = webdriver.Chrome(options=options)
 
         self.logger = logging.getLogger(__name__)
@@ -128,7 +129,7 @@ class Parser:
                 )
                 time.sleep(Parser.time_timeout)
 
-    def get_all_items(self) -> list:
+    def iterate_over_items(self) -> list:
         random.seed(datetime.now().timestamp())
         self.logger.info(
             f"Start getting all items for game_id = {self.game_id}"
@@ -137,11 +138,22 @@ class Parser:
 
         while True:
             current_page = random.randint(1, max_pages)
-            items_on_page = self.get_items_from_page(current_page)
-            if len(items_on_page) != 0:
-                for i in items_on_page:
-                    yield i
-                current_page += 1
+            self.logger.info(f"Getting steam_items from page={current_page}, game_id={self.game_id}")
+            try:
+                items_on_page = self.get_items_from_page(current_page)
+                self.logger.info(f"Got {len(items_on_page)} items from page={current_page}")
+            except Exception as exc:
+                self.logger.error(f"Error while getting steam_items from page, e={exc}")
+                time.sleep(Parser.time_to_wait)
+                continue
+
+            for item in items_on_page:
+                try:
+                    item = self.get_cost_and_orders(item)
+                    yield item
+                except Exception as exc:
+                    self.logger.error(f"Error while getting cost and orders for steam_item link={item.link}. {exc}")
+
             time.sleep(Parser.time_to_wait)
 
     def get_cost_and_orders(self, item: MarketItem) -> MarketItem:
