@@ -81,7 +81,9 @@ class Parser:
                 )
                 time.sleep(Parser.time_timeout)
             except Exception as e:
-                self.logger.error(f"Error while parsing page game_id = {self.game_id}, link = {link}, {e}")
+                self.logger.error(
+                    f"Error while parsing page game_id = {self.game_id}, link = {link}, {e}"
+                )
                 time.sleep(Parser.time_timeout)
 
     def get_items_from_page(self, page_number: int) -> list:
