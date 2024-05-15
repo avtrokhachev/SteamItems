@@ -1,8 +1,8 @@
-import random
-from datetime import datetime
 import logging
+import random
 import time
 from copy import copy
+from datetime import datetime
 
 import bs4
 from functions import convert_to_dollars
@@ -35,13 +35,6 @@ class Parser:
         self.driver = webdriver.Chrome(options=options)
 
         self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        py_handler = logging.FileHandler(f"{__name__}.log", mode="a")
-        py_formatter = logging.Formatter(
-            "%(name)s %(asctime)s %(levelname)s %(message)s"
-        )
-        py_handler.setFormatter(py_formatter)
-        self.logger.addHandler(py_handler)
 
         self.logger.info(
             f"Parser for game with game_id = {self.game_id} created"
@@ -88,7 +81,7 @@ class Parser:
                 )
                 time.sleep(Parser.time_timeout)
             except Exception as e:
-                self.logger.exception(e)
+                self.logger.error(f"Error while parsing page game_id = {self.game_id}, link = {link}, {e}")
                 time.sleep(Parser.time_timeout)
 
     def get_items_from_page(self, page_number: int) -> list:
@@ -138,12 +131,18 @@ class Parser:
 
         while True:
             current_page = random.randint(1, max_pages)
-            self.logger.info(f"Getting steam_items from page={current_page}, game_id={self.game_id}")
+            self.logger.info(
+                f"Getting steam_items from page={current_page}, game_id={self.game_id}"
+            )
             try:
                 items_on_page = self.get_items_from_page(current_page)
-                self.logger.info(f"Got {len(items_on_page)} items from page={current_page}")
+                self.logger.info(
+                    f"Got {len(items_on_page)} items from page={current_page}"
+                )
             except Exception as exc:
-                self.logger.error(f"Error while getting steam_items from page, e={exc}")
+                self.logger.error(
+                    f"Error while getting steam_items from page, e={exc}"
+                )
                 time.sleep(Parser.time_to_wait)
                 continue
 
@@ -152,7 +151,9 @@ class Parser:
                     item = self.get_cost_and_orders(item)
                     yield item
                 except Exception as exc:
-                    self.logger.error(f"Error while getting cost and orders for steam_item link={item.link}. {exc}")
+                    self.logger.error(
+                        f"Error while getting cost and orders for steam_item link={item.link}. {exc}"
+                    )
 
             time.sleep(Parser.time_to_wait)
 

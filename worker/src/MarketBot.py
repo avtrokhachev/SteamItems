@@ -1,11 +1,10 @@
-import typing as tp
 import logging
+import typing as tp
 from configparser import SectionProxy
 
 import requests
 from MarketItem import MarketItem
 from Parser import Parser
-
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +16,9 @@ class MarketBot:
         self.api_url = cfg["api_url"]
 
     def start(self):
-        log.info(f"MarketBot start working for game_id={self.game_id}, api_url={self.api_url}")
+        log.info(
+            f"MarketBot start working for game_id={self.game_id}, api_url={self.api_url}"
+        )
         for item in self.parser.iterate_over_items():
             self.upsert_item(item)
 
@@ -25,10 +26,16 @@ class MarketBot:
         try:
             response = requests.post(self.api_url, json=market_item.get_dict())
         except Exception as exc:
-            log.error(f"Error occurred while trying to post handler to update steam_item link={market_item.link}, e={exc}")
+            log.error(
+                f"Error occurred while trying to post handler to update steam_item link={market_item.link}, e={exc}"
+            )
             return
 
         if response.status_code == 200:
-            log.info(f"Successfully updated steam_item link={market_item.link}, code={response.status_code}")
+            log.info(
+                f"Successfully updated steam_item link={market_item.link}, code={response.status_code}"
+            )
         else:
-            log.error(f"Error occurred on steam_item update link={market_item.link}, code={response.status_code}")
+            log.error(
+                f"Error occurred on steam_item update link={market_item.link}, code={response.status_code}"
+            )
