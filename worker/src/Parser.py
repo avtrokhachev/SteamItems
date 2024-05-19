@@ -82,7 +82,7 @@ class Parser:
                 )
                 return numer_of_pages
             except TimeoutException as timeout:
-                self.logger.warning(
+                self.logger.error(
                     f"Timeout occurred for game_id = {self.game_id}, link = {link}"
                 )
                 time.sleep(Parser.time_timeout)
@@ -125,7 +125,7 @@ class Parser:
                 )
                 return items
             except TimeoutException:
-                self.logger.warning(
+                self.logger.error(
                     f"Timeout occurred for game_id = {self.game_id}, link = {link}"
                 )
                 time.sleep(Parser.time_timeout)
@@ -208,7 +208,7 @@ class Parser:
                 new_item.buy_price = convert_to_dollars(raw_text[1].text)
                 break
             except TimeoutException:
-                self.logger.warning(
+                self.logger.error(
                     f"Timeout occurred for item {new_item.name}, link {new_item.link}"
                 )
                 time.sleep(Parser.time_timeout)
