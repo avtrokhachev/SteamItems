@@ -1,4 +1,5 @@
 import logging
+import sys
 import typing as tp
 from configparser import SectionProxy
 
@@ -7,6 +8,11 @@ from MarketItem import MarketItem
 from Parser import Parser
 
 log = logging.getLogger(__name__)
+formatter = logging.Formatter("[%(levelname)s] %(message)s")
+handler = logging.StreamHandler(stream=sys.stdout)
+handler.setFormatter(formatter)
+log.addHandler(handler)
+log.setLevel(logging.INFO)
 
 
 class MarketBot:

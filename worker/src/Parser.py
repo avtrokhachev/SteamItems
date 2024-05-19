@@ -1,5 +1,6 @@
 import logging
 import random
+import sys
 import time
 from copy import copy
 from datetime import datetime
@@ -35,6 +36,11 @@ class Parser:
         self.driver = webdriver.Chrome(options=options)
 
         self.logger = logging.getLogger(__name__)
+        formatter = logging.Formatter("[%(levelname)s] %(message)s")
+        handler = logging.StreamHandler(stream=sys.stdout)
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+        self.logger.setLevel(logging.INFO)
 
         self.logger.info(
             f"Parser for game with game_id = {self.game_id} created"

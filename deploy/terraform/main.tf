@@ -37,3 +37,8 @@ module "database" {
   subnet_id  = module.api-network.vpc_subnet
   depends_on = [module.api-network]
 }
+
+module "cloud-logging" {
+  source = "./modules/cloud-logging"
+  folder_id = var.folder_id
+}

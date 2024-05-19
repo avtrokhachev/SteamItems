@@ -4,6 +4,7 @@ resource "yandex_compute_instance_group" "worker-ig" {
   service_account_id = "ajekqdk2bmvjq29993jl"
 
   instance_template {
+    service_account_id = "ajekqdk2bmvjq29993jl"
     platform_id = "standard-v1"
 
     resources {
