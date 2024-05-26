@@ -1,3 +1,6 @@
+# General information #
+This microservice is responsible for saving/working with SteamItems. It is the main service of the project, users requests are also handled here.
+
 # How to setup project #
 
 1. Setup and activate venv

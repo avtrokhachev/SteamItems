@@ -1,9 +1,13 @@
 # WARNING #
 
-This service was written about a year ago and have not benn modified since then.
+This service was written about a year ago and have not been modified since then.
 Code is old and deprecated, tests coverage also sucks.
 Just trust than it's working until further refactoring
 
+# General information #
+
+This microservice is responsible for parsing SteamCommunityMarket to collect information about SteamItems.
+After getting information about any SteamItem, he goes to API microservice to update information about it there.
 
 # How to setup project #
 
@@ -30,5 +34,5 @@ docker build -t steam_items_main .
 ```
 3. Start docker container
 ```
-docker run --detach --publish 80:80 steam_items_main:latest
+docker run --detach steam_items_main:latest
 ```
